@@ -44,6 +44,19 @@ public final class Main {
     this.args = args;
   }
 
+  private boolean isNumeric(String s) {
+
+    if (s == null || s.equals("")) {
+      return false;
+    }
+    try {
+      double val = Double.parseDouble(s);
+      return true;
+    } catch (NumberFormatException nfe) {
+      return false;
+    }
+  }
+
   private void run() {
     // set up parsing of command line flags
     OptionParser parser = new OptionParser();
@@ -61,15 +74,25 @@ public final class Main {
     }
 
     // TODO: Add your REPL here!
+    MathBot math = new MathBot();
     try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
       String input;
       while ((input = br.readLine()) != null) {
         try {
           input = input.trim();
           String[] arguments = input.split(" ");
-          System.out.println(arguments[0]);
           // TODO: complete your REPL by adding commands for addition "add" and subtraction
           //  "subtract"
+          if (arguments.length == 3 && this.isNumeric(arguments[1]) && this.isNumeric(arguments[2])) { // && arguments[1] & arguments[2] are both numeric)
+            double num1 = Double.parseDouble(arguments[1]);
+            double num2 = Double.parseDouble(arguments[2]);
+            if (arguments[0].equalsIgnoreCase("add")){
+              System.out.println(math.add(num1, num2));
+            }
+            else if (arguments[0].equalsIgnoreCase("subtract")) {
+              System.out.println(math.subtract(num1, num2));
+            }
+          }
         } catch (Exception e) {
           // e.printStackTrace();
           System.out.println("ERROR: We couldn't process your input");
